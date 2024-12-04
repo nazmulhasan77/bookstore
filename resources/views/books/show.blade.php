@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout', ['title' => 'View'])
 @section('page-content')
 
 		<p>
