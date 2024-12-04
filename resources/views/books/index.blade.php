@@ -1,17 +1,28 @@
 @extends('layout', ['title' => 'Home'])
 
     @section('page-content')
-    <h2>Book List</h2>
 
-    <div class="row mt-2">
+<div class="row mt-2">
 
         <div class="col-lg-10">
-            Scarch Functionality
+            <form method="get" action="{{route('books.index')}}">
+
+                <div class="row g-3">
+                    <div class="col">
+                      <input type="text"  name="scarch" class="form-control" placeholder="Scarch" >
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-success"><i class="bi bi-search"></i> Search</button>
+                    </div>
+                  </div>
+
+
+            </form>
         </div>
 
         <div class="col-lg-2">
             <p class="text-end">
-                <a href="{{route('books.create')}}" class="btn btn-primary">Add Book</a>
+                <a href="{{route('books.create')}}" class="btn btn-primary"><i class="bi bi-file-plus-fill"></i>Add Book</a>
             </p>
         </div>
 
@@ -43,6 +54,12 @@
                 <td>
                     <a href="{{url('books/'.'show/'.$book->id)}}"> View </a>
                     <a href="{{url('books/'.'edit/'.$book->id)}}"> Edit </a>
+                    <form method="post" action="{{route('books.destroy' )}}" onsubmit="return confirm ('Are you sure to delete this book ?') ">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="id" value="{{$book->id}}">
+                        <input type="submit" value="Delete" class="btn btn-link"></input>
+                     </form>
                 </td>
             </tr>
 

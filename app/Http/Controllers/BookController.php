@@ -7,9 +7,19 @@ use App\Models\Book;
 
 class BookController extends Controller
 {
-    //index controller
-    public function index(){
-       $books = Book::paginate(10);
+    public function index(Request $request ){
+
+        if($request->has("scarch")){
+            $books=Book::query()
+                ->where('title','like','%'.$request->get('scarch').'%')
+                ->orWhere('author','like','%'.$request->get('scarch').'%')
+                ->paginate(10);
+        }
+        else{
+
+            $books = Book::paginate(10);
+        }
+
        return view("books.index")
         ->with('books',$books);
     }
@@ -84,6 +94,12 @@ class BookController extends Controller
 
         return redirect()->route('books.show' ,$book->id);
 
+    }
+     //for deleting book
+     public function destroy(Request $request){
+        $book = Book::findOrFail($request ->id);
+        $book->delete();
+        return redirect()->route('books.index');
     }
 
 
